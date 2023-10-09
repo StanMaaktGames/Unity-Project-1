@@ -10,27 +10,27 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: fffcca03a4139ee45852b428c97faa29, type: 3}
       propertyPath: m_LocalScale.x
-      value: 0.075
+      value: 0.04
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: fffcca03a4139ee45852b428c97faa29, type: 3}
       propertyPath: m_LocalScale.y
-      value: 0.075
+      value: 0.04
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: fffcca03a4139ee45852b428c97faa29, type: 3}
       propertyPath: m_LocalScale.z
-      value: 0.075
+      value: 0.04
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: fffcca03a4139ee45852b428c97faa29, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -627.705
+      value: -631.76025
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: fffcca03a4139ee45852b428c97faa29, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 13.36
+      value: 6.16
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: fffcca03a4139ee45852b428c97faa29, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 355.017
+      value: 356.89398
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: fffcca03a4139ee45852b428c97faa29, type: 3}
       propertyPath: m_LocalRotation.w
@@ -80,6 +80,10 @@ PrefabInstance:
       propertyPath: m_TagString
       value: PlayerWeapon
       objectReference: {fileID: 0}
+    - target: {fileID: 1151388028547126963, guid: fffcca03a4139ee45852b428c97faa29, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 5
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -116,7 +120,7 @@ BoxCollider:
   m_Enabled: 1
   serializedVersion: 3
   m_Size: {x: 3, y: 15, z: 1}
-  m_Center: {x: 0, y: 6, z: 0}
+  m_Center: {x: 0, y: 11, z: 0}
 --- !u!54 &4754240124656707842
 Rigidbody:
   m_ObjectHideFlags: 0
