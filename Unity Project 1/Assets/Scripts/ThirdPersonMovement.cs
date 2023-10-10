@@ -11,15 +11,17 @@ public class ThirdPersonMovement : MonoBehaviour
     public LayerMask groundMask;
     public Slider staminaSlider;
     public GameObject staminaSliderRect;
+    public Collider weaponCollider;
 
     RectTransform staminaSliderRectTransform;
+    Animator animator;
 
     public float speed = 6f;
     public float runSpeed = 12f;
     public float gravity = -9.81f;
     public float jumpHeight = 3f;
     public float maxStamina = 100f;
-    public float staminaRechargeCooldown = 2f;
+    public float staminaRechargeCooldown = 0.5f;
     public float staminaRecoverySpeed = 10f;
 
     public float turnSmoothTime = 0.1f;
@@ -34,6 +36,8 @@ public class ThirdPersonMovement : MonoBehaviour
     void Start()
     {
         Cursor.lockState = CursorLockMode.Locked;
+        animator = GetComponentInChildren<Animator>();
+        weaponCollider = GetComponentInChildren<Collider>();
     }
 
     // Update is called once per frame
@@ -47,6 +51,7 @@ public class ThirdPersonMovement : MonoBehaviour
         }
 
         isGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, groundMask);
+        animator.SetBool("falling", !isGrounded);
 
         if (isGrounded && velocity.y < 0)
         {
@@ -67,13 +72,19 @@ public class ThirdPersonMovement : MonoBehaviour
             if (Input.GetKey("left shift") && stamina > 0)
             {
                 controller.Move(moveDir.normalized * runSpeed * Time.deltaTime);
+                animator.SetFloat("speed", runSpeed);
                 stamina -= Time.deltaTime * 5;
                 staminaRecharge = staminaRechargeCooldown;
             }
             else
             {
                 controller.Move(moveDir.normalized * speed * Time.deltaTime);
+                animator.SetFloat("speed", speed);
             }
+        } 
+        else
+        {
+            animator.SetFloat("speed", 0f);
         }
 
         if (Input.GetButtonDown("Jump") && isGrounded)
@@ -84,5 +95,10 @@ public class ThirdPersonMovement : MonoBehaviour
         velocity.y += gravity * Time.deltaTime;
 
         controller.Move(velocity * Time.deltaTime);
+    }
+
+    void OnMouseDown()
+    {
+        animator.SetTrigger("attack");
     }
 }

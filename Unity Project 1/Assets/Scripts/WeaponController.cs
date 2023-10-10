@@ -7,11 +7,12 @@ public class WeaponController : MonoBehaviour
     public GameObject sword;
 
     public Collider weaponCollider;
+    GameObject weapon;
 
     // Start is called before the first frame update
     void Start()
     {
-        Instantiate(sword, transform.position, Quaternion.identity, transform);
+        weapon = Instantiate(sword, transform.position, transform.rotation, transform);
         weaponCollider = GetComponentInChildren<Collider>();
     }
 
