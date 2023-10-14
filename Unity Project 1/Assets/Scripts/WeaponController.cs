@@ -19,13 +19,13 @@ public class WeaponController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetMouseButtonDown(0))
-        {
-            weaponCollider.enabled = true;
-        }
-        else
-        {
-            weaponCollider.enabled = false;
-        }
+        //if (Input.GetMouseButtonDown(0))
+        //{
+        //    weaponCollider.enabled = true;
+        //}
+        //else
+        //{
+        //    weaponCollider.enabled = false;
+        //}
     }
 }
