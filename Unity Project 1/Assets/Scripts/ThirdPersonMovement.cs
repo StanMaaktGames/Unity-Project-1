@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -11,8 +12,9 @@ public class ThirdPersonMovement : MonoBehaviour
     public LayerMask groundMask;
     public Slider staminaSlider;
     public GameObject staminaSliderRect;
-    public Collider weaponCollider;
-
+    public Transform weaponController;
+    
+    Collider weaponCollider;
     RectTransform staminaSliderRectTransform;
     Animator animator;
 
@@ -23,21 +25,24 @@ public class ThirdPersonMovement : MonoBehaviour
     public float maxStamina = 100f;
     public float staminaRechargeCooldown = 0.5f;
     public float staminaRecoverySpeed = 10f;
-
     public float turnSmoothTime = 0.1f;
-    float turnsmoothVelocity;
     public float groundDistance = 0.4f;
+
+    float turnsmoothVelocity;
+    float stamina = 0f;
+    float staminaRecharge = 0f;
+    Vector3 lastPosition;
+    Vector3 moveVelocity;
+    float moveVelocityFloat;
 
     Vector3 velocity;
     public bool isGrounded;
-    float stamina = 0f;
-    float staminaRecharge = 0f;
 
     void Start()
     {
         Cursor.lockState = CursorLockMode.Locked;
         animator = GetComponentInChildren<Animator>();
-        weaponCollider = GetComponentInChildren<Collider>();
+        weaponCollider = weaponController.GetComponentInChildren<Collider>();
     }
 
     // Update is called once per frame
@@ -62,30 +67,33 @@ public class ThirdPersonMovement : MonoBehaviour
         float vertical = Input.GetAxisRaw("Vertical");
         Vector3 direction = new Vector3(horizontal, 0f, vertical).normalized;
 
-        if (direction.magnitude > 0.1f )
+        if (direction.magnitude > 0.1f ) // move the player
         {
             float targetAngle = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg + cam.eulerAngles.y;
             float angle = Mathf.SmoothDampAngle(transform.eulerAngles.y, targetAngle, ref turnsmoothVelocity, turnSmoothTime);
             transform.rotation = Quaternion.Euler(0f, angle, 0f);
 
             Vector3 moveDir = Quaternion.Euler(0f, targetAngle, 0f) * Vector3.forward;
-            if (Input.GetKey("left shift") && stamina > 0)
+            if (!(animator.GetCurrentAnimatorStateInfo(0).IsName("SwordAttack1") || animator.GetCurrentAnimatorStateInfo(0).IsName("SwordAttack2") || animator.GetCurrentAnimatorStateInfo(0).IsName("SwordAttack3")))
             {
-                controller.Move(moveDir.normalized * runSpeed * Time.deltaTime);
-                animator.SetFloat("speed", runSpeed);
-                stamina -= Time.deltaTime * 5;
-                staminaRecharge = staminaRechargeCooldown;
-            }
-            else
-            {
-                controller.Move(moveDir.normalized * speed * Time.deltaTime);
-                animator.SetFloat("speed", speed);
+                if (Input.GetKey("left shift") && stamina > 0)
+                {
+                    controller.Move(moveDir.normalized * runSpeed * Time.deltaTime);
+                    stamina -= Time.deltaTime * 5;
+                    staminaRecharge = staminaRechargeCooldown;
+                }
+                else if (Input.GetKey("left shift"))
+                {
+                    stamina -= Time.deltaTime * 5;
+                    staminaRecharge = staminaRechargeCooldown;
+                    controller.Move(moveDir.normalized * speed * Time.deltaTime);
+                } 
+                else
+                {
+                    controller.Move(moveDir.normalized * speed * Time.deltaTime);
+                }
             }
         } 
-        else
-        {
-            animator.SetFloat("speed", 0f);
-        }
 
         if (Input.GetButtonDown("Jump") && isGrounded)
         {
@@ -95,10 +103,40 @@ public class ThirdPersonMovement : MonoBehaviour
         velocity.y += gravity * Time.deltaTime;
 
         controller.Move(velocity * Time.deltaTime);
+
+        if (Input.GetMouseButtonDown(0) && !animator.GetBool("attack"))
+        {
+            animator.SetTrigger("attack");
+            stamina -= 3;
+            staminaRecharge = staminaRechargeCooldown;
+        }
+
+        if (animator.GetCurrentAnimatorStateInfo(0).IsName("SwordAttack1") || animator.GetCurrentAnimatorStateInfo(0).IsName("SwordAttack2") || animator.GetCurrentAnimatorStateInfo(0).IsName("SwordAttack3")) // turn weapon collider on/off
+        {
+            weaponCollider.enabled = true;
+        }
+        else
+        {
+            weaponCollider.enabled = false;
+        }
+
+        animator.SetInteger("movingState", AnimateMovingState());
+        lastPosition = transform.position;
     }
 
-    void OnMouseDown()
+    int AnimateMovingState() //determine whether the idle, walking or running animation should be playing
     {
-        animator.SetTrigger("attack");
+        moveVelocity = ((transform.position - lastPosition)) / Time.deltaTime;
+        moveVelocityFloat = new Vector2(Mathf.Abs(moveVelocity.x), Mathf.Abs(moveVelocity.z)).magnitude;
+
+        if (moveVelocityFloat > runSpeed - 1)
+        {
+            return 2;
+        }
+        else if (moveVelocityFloat > 0)
+        {
+            return 1;
+        }
+        return 0;
     }
 }

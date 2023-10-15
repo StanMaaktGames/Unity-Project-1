@@ -4,12 +4,18 @@ using UnityEngine;
 
 public class ObjectBreakOnHit : MonoBehaviour
 {
+    public float health = 30f;
+
     void OnTriggerEnter(Collider other)
     {
         Debug.Log("collision");
         if (other.CompareTag("PlayerWeapon"))
         {
-            Destroy(gameObject);
+            health -= 10f;
+            if (health <= 0)
+            {
+                Destroy(gameObject);
+            }
         }
     }
 }
