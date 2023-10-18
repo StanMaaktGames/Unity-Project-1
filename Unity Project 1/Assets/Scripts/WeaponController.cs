@@ -4,28 +4,24 @@ using UnityEngine;
 
 public class WeaponController : MonoBehaviour
 {
-    public GameObject sword;
-
     public Collider weaponCollider;
+
     GameObject weapon;
+
+    public float damage = 10f;
 
     // Start is called before the first frame update
     void Start()
     {
-        weapon = Instantiate(sword, transform.position, transform.rotation, transform);
-        weaponCollider = GetComponentInChildren<Collider>();
+        weaponCollider = GetComponent<Collider>();
     }
 
-    // Update is called once per frame
-    void Update()
+    void OnTriggerEnter(Collider other)
     {
-        //if (Input.GetMouseButtonDown(0))
-        //{
-        //    weaponCollider.enabled = true;
-        //}
-        //else
-        //{
-        //    weaponCollider.enabled = false;
-        //}
+        Debug.Log("collision");
+        if (other.CompareTag("Enemy"))
+        {
+            other.GetComponent<EnemyController>().EnemyHit(damage);
+        }
     }
 }
