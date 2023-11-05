@@ -11,10 +11,10 @@ public class EnemyController : MonoBehaviour
 
     public float sightDistance = 25f;
     public float requiredInterest = 5f;
-    public float speed, runSpeed, memory, maxhealth, iFramesOnHit;
+    public float speed, memory, maxhealth, iFramesOnHit;
 
     float distance;
-    float interest;
+    public float interest;
     float moveVelocityFloat;
     float health;
     float iFrames = 0f;
@@ -36,30 +36,36 @@ public class EnemyController : MonoBehaviour
     {
         distance = Vector3.Distance(transform.position, player.transform.position);
 
-        if (interest > requiredInterest) 
+        if (interest >= requiredInterest * 1.5f) 
         {
             Fighting();
-            if (distance > sightDistance)
-            {
-                interest -= Time.deltaTime * memory;
-            }
         }
-        else if (distance <= sightDistance)
+        else if (interest > 0)
         {
-            if (Physics.Raycast(transform.position, (player.transform.position - transform.position), out hit, 50))
-            {
-                if (hit.transform == player.transform)
-                {
-                    interest += (sightDistance / (distance + 0.0001f) - 1) * Time.deltaTime;
-                    lastSeenPlayerPosition = player.transform.position;
-                }
-                Searching();
-            }
+            Searching();
         }
         else 
         {
             Idle();
         }
+        
+        if (distance <= sightDistance)
+        {
+            if (Physics.Raycast(transform.position, (player.transform.position - transform.position), out hit, 50))
+            {
+                if (hit.transform == player.transform)
+                {
+                    interest += Time.deltaTime * memory;
+                    interest += (sightDistance / (distance + 0.0001f) - 1) * Time.deltaTime;
+                    lastSeenPlayerPosition = player.transform.position;
+                    if (interest > requiredInterest)
+                    {
+                        interest = requiredInterest * 2;
+                    }
+                }
+            }
+        }
+        interest -= Time.deltaTime * memory;
 
         iFrames -= Time.deltaTime;
         animator.SetInteger("movingState", AnimateMovingState());
@@ -86,10 +92,10 @@ public class EnemyController : MonoBehaviour
 
     void Fighting()
     {
-        agent.speed = runSpeed;
+        agent.speed = speed;
         if (distance > 2)
         {
-            agent.SetDestination(player.transform.position);
+            agent.SetDestination(lastSeenPlayerPosition);
         }
         else 
         {
@@ -101,12 +107,7 @@ public class EnemyController : MonoBehaviour
     {
         moveVelocity = ((transform.position - lastPosition)) / Time.deltaTime;
         moveVelocityFloat = new Vector2(Mathf.Abs(moveVelocity.x), Mathf.Abs(moveVelocity.z)).magnitude;
-
-        if (moveVelocityFloat > runSpeed - 1)
-        {
-            return 2;
-        }
-        else if (moveVelocityFloat > 0)
+        if (moveVelocityFloat > 0)
         {
             return 1;
         }
