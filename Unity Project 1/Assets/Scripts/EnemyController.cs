@@ -86,7 +86,7 @@ public class EnemyController : MonoBehaviour
         }
         else if (interest > requiredInterest/3)
         {
-            transform.LookAt(player.transform);
+            transform.rotation = RotateTowardsPlayer();
         }
     }
 
@@ -97,8 +97,13 @@ public class EnemyController : MonoBehaviour
         {
             agent.SetDestination(lastSeenPlayerPosition);
         }
+        else if (!animator.GetCurrentAnimatorStateInfo(0).IsName("Attack1"))
+        {
+            animator.SetTrigger("attack1");
+        }
         else 
         {
+            transform.rotation = RotateTowardsPlayer();
             agent.SetDestination(transform.position);
         }
     }
@@ -125,6 +130,13 @@ public class EnemyController : MonoBehaviour
         {
             Debug.Log("death");
         }
+    }
+
+    Quaternion RotateTowardsPlayer()
+    {
+        Vector3 direction = lastSeenPlayerPosition - transform.position;
+        Quaternion rotation = Quaternion.LookRotation(direction);
+        return Quaternion.Lerp(transform.rotation, rotation, Time.deltaTime);
     }
 
     void OnCollisionExit(Collision other)
