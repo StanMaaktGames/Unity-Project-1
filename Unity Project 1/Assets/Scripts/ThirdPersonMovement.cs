@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -32,7 +31,6 @@ public class ThirdPersonMovement : MonoBehaviour
     float turnsmoothVelocity;
     float stamina = 0f;
     float staminaRecharge = 0f;
-    Vector3 hitNormal;
     Vector3 lastPosition;
     Vector3 moveVelocity;
     float moveVelocityFloat;
@@ -59,18 +57,6 @@ public class ThirdPersonMovement : MonoBehaviour
 
         isGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, groundMask);
         animator.SetBool("falling", !isGrounded);
-        RaycastHit hit;
-        if (isGrounded)
-        {
-            if (Physics.Raycast(groundCheck.position, Vector3.down, out hit, groundDistance, groundMask))
-            {
-                hitNormal = hit.normal;
-                if (Mathf.Abs(hitNormal.x) + Mathf.Abs(hitNormal.z) > 1)
-                {
-                    isGrounded = false;
-                }
-            }
-        }
 
         if (isGrounded && velocity.y < 0)
         {
@@ -152,9 +138,5 @@ public class ThirdPersonMovement : MonoBehaviour
             return 1;
         }
         return 0;
-    }
-
-    void OnControllerColliderHit (ControllerColliderHit hit) {
-        hitNormal = hit.normal;
     }
 }
