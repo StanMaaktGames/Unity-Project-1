@@ -100,6 +100,7 @@ public class EnemyController : MonoBehaviour
         else if (!animator.GetCurrentAnimatorStateInfo(0).IsName("Attack1"))
         {
             animator.SetTrigger("attack1");
+            agent.SetDestination(transform.position);
         }
         else 
         {
