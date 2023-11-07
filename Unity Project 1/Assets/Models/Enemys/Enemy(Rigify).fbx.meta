@@ -37,7 +37,7 @@ ModelImporter:
       takeName: rig|Attack1
       internalID: 3888107679142027666
       firstFrame: 0
-      lastFrame: 180
+      lastFrame: 220
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -46,9 +46,9 @@ ModelImporter:
       hasAdditiveReferencePose: 0
       loopTime: 0
       loopBlend: 0
-      loopBlendOrientation: 1
-      loopBlendPositionY: 1
-      loopBlendPositionXZ: 1
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
       keepOriginalOrientation: 0
       keepOriginalPositionY: 1
       keepOriginalPositionXZ: 1
@@ -344,18 +344,18 @@ ModelImporter:
     serializedVersion: 3
     human: []
     skeleton:
-    - name: Enemy(Clone)
+    - name: Enemy(Rigify)(Clone)
       parentName: 
       position: {x: 0, y: 0, z: 0}
       rotation: {x: 0, y: 0, z: 0, w: 1}
       scale: {x: 1, y: 1, z: 1}
     - name: Armor1
-      parentName: Enemy(Clone)
+      parentName: Enemy(Rigify)(Clone)
       position: {x: -0, y: 5.693785, z: 0}
       rotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071067}
       scale: {x: 106.144806, y: 106.144806, z: 106.144806}
     - name: rig
-      parentName: Enemy(Clone)
+      parentName: Enemy(Rigify)(Clone)
       position: {x: -0, y: 0, z: 0}
       rotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071067}
       scale: {x: 100, y: 100, z: 100}
@@ -3125,12 +3125,12 @@ ModelImporter:
       rotation: {x: 0, y: -0, z: -0, w: 1}
       scale: {x: 1, y: 1, z: 1}
     - name: Cube.006
-      parentName: Enemy(Clone)
+      parentName: Enemy(Rigify)(Clone)
       position: {x: -0, y: 5.7065024, z: 0}
       rotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071067}
       scale: {x: 100, y: 100, z: 100}
     - name: armor2.002
-      parentName: Enemy(Clone)
+      parentName: Enemy(Rigify)(Clone)
       position: {x: 0.81331867, y: 2.8416567, z: -0.01928742}
       rotation: {x: -0.7041097, y: -0.08140537, z: 0.0410445, w: 0.70421445}
       scale: {x: 54.919224, y: 54.842155, z: 57.3057}
@@ -3142,7 +3142,7 @@ ModelImporter:
     legStretch: 0.05
     feetSpacing: 0
     globalScale: 1
-    rootMotionBoneName: root
+    rootMotionBoneName: rig
     hasTranslationDoF: 0
     hasExtraRoot: 1
     skeletonHasParents: 1
