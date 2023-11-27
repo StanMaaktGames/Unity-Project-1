@@ -1,17 +1,5 @@
 fileFormatVersion: 2
-guid: 0eae426701002754a9856c3fe8c66c5f
-labels:
-- Rigify
-- Blender
-- Rig
-- Rigging
-- IK
-- FK
-- Inverse
-- Forward
-- Kinematics
-- Animating
-- Import
+guid: d922f1f80a95d43479ce0bb5cbedcd0f
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2

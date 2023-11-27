@@ -5,18 +5,18 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class ThirdPersonMovement : MonoBehaviour
+public class PlayerController : MonoBehaviour
 {
     public CharacterController controller;
     public Transform cam;
     public Transform groundCheck;
     public LayerMask groundMask;
     public Slider staminaSlider;
+    public Slider healthSlider;
     public GameObject staminaSliderRect;
     public Transform weaponController;
     
     Collider weaponCollider;
-    RectTransform staminaSliderRectTransform;
     Animator animator;
 
     public float speed = 6f;
@@ -24,24 +24,30 @@ public class ThirdPersonMovement : MonoBehaviour
     public float gravity = -9.81f;
     public float jumpHeight = 3f;
     public float maxStamina = 100f;
+    public float maxHealth = 100f;
     public float staminaRechargeCooldown = 0.5f;
     public float staminaRecoverySpeed = 10f;
     public float turnSmoothTime = 0.1f;
     public float groundDistance = 0.4f;
+    public float iFramesOnHit;
 
     float turnsmoothVelocity;
-    float stamina = 0f;
+    float stamina;
+    float health;
     float staminaRecharge = 0f;
     Vector3 hitNormal;
     Vector3 lastPosition;
     Vector3 moveVelocity;
     float moveVelocityFloat;
+    float iFrames;
 
     Vector3 velocity;
     public bool isGrounded;
 
     void Start()
     {
+        stamina = maxStamina;
+        health = maxHealth;
         Cursor.lockState = CursorLockMode.Locked;
         animator = GetComponentInChildren<Animator>();
         weaponCollider = weaponController.GetComponentInChildren<Collider>();
@@ -51,6 +57,7 @@ public class ThirdPersonMovement : MonoBehaviour
     void Update()
     {
         staminaSlider.value = stamina;
+        healthSlider.value = health;
         staminaRecharge -= Time.deltaTime;
         if (stamina < maxStamina && staminaRecharge < 0)
         {
@@ -134,6 +141,8 @@ public class ThirdPersonMovement : MonoBehaviour
             weaponCollider.enabled = false;
         }
 
+        iFrames -= Time.deltaTime;
+        
         animator.SetInteger("movingState", AnimateMovingState());
         lastPosition = transform.position;
     }
@@ -154,7 +163,24 @@ public class ThirdPersonMovement : MonoBehaviour
         return 0;
     }
 
-    void OnControllerColliderHit (ControllerColliderHit hit) {
+    void OnControllerColliderHit (ControllerColliderHit hit) 
+    {
         hitNormal = hit.normal;
+    }
+
+    public void PlayerHit(float damage)
+    {
+        Debug.Log(iFrames);
+        if (iFrames <= 0)
+        {
+            animator.SetTrigger("hit");
+            animator.ResetTrigger("attack");
+            health -= damage;
+            iFrames = iFramesOnHit;
+        }
+        if (health <= 0)
+        {
+            Debug.Log("death");
+        }
     }
 }

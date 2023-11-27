@@ -11,7 +11,8 @@ GameObject:
   - component: {fileID: 2788692229892387691}
   - component: {fileID: 3654493553272537131}
   - component: {fileID: 84176831347154628}
-  - component: {fileID: 9171843276043497792}
+  - component: {fileID: -7170829671524401117}
+  - component: {fileID: 5220577139208889193}
   m_Layer: 0
   m_Name: Enemy Club
   m_TagString: EnemyWeapon
@@ -84,8 +85,22 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &9171843276043497792
-BoxCollider:
+--- !u!114 &-7170829671524401117
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6275322694073203337}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e42c0646326a0d34f8f0006cc1e36e02, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  opponentLayer: 9
+  damage: 10
+--- !u!64 &5220577139208889193
+MeshCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -102,6 +117,7 @@ BoxCollider:
   m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 0.03, y: 0.04, z: 0.1}
-  m_Center: {x: 0.002, y: 0.002, z: 0.12560813}
+  serializedVersion: 5
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 4084444463187792637, guid: 60eb923775a7b764ca74efc4351fa2be, type: 3}

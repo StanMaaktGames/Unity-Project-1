@@ -1,11 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class EnemyController : MonoBehaviour
 {
     public UnityEngine.AI.NavMeshAgent agent;
     public GameObject player;
+    public Slider healthSlider;
 
     Animator animator;
 
@@ -14,7 +16,7 @@ public class EnemyController : MonoBehaviour
     public float speed, memory, maxhealth, iFramesOnHit;
 
     float distance;
-    public float interest;
+    float interest;
     float moveVelocityFloat;
     float health;
     float iFrames = 0f;
@@ -22,7 +24,6 @@ public class EnemyController : MonoBehaviour
     Vector3 moveVelocity;
     Vector3 lastPosition;
     Vector3 lastSeenPlayerPosition;
-    Vector3 targetAngle;
 
     // Start is called before the first frame update
     void Start()
@@ -66,10 +67,12 @@ public class EnemyController : MonoBehaviour
             }
         }
         interest -= Time.deltaTime * memory;
-
         iFrames -= Time.deltaTime;
+
         animator.SetInteger("movingState", AnimateMovingState());
         lastPosition = transform.position;
+
+        healthSlider.value = health;
     }
 
     void Idle()
@@ -79,6 +82,7 @@ public class EnemyController : MonoBehaviour
 
     void Searching()
     {
+        agent.isStopped = false;
         agent.speed = speed;
         if (interest > requiredInterest/3*2) 
         {
@@ -93,18 +97,20 @@ public class EnemyController : MonoBehaviour
     void Fighting()
     {
         agent.speed = speed;
-        if (distance > 2)
+        if (animator.GetCurrentAnimatorStateInfo(0).IsName("Attack1")) // is attacking
         {
+            agent.isStopped = true;
+            transform.rotation = RotateTowardsPlayer();
+        }
+        else if (distance > 2)
+        {
+            agent.isStopped = false;
             agent.SetDestination(lastSeenPlayerPosition);
         }
-        else if (!animator.GetCurrentAnimatorStateInfo(0).IsName("Attack1"))
+        else // start attack
         {
+            agent.isStopped = true;
             animator.SetTrigger("attack1");
-            agent.SetDestination(transform.position);
-        }
-        else 
-        {
-            transform.rotation = RotateTowardsPlayer();
             agent.SetDestination(transform.position);
         }
     }
@@ -122,6 +128,7 @@ public class EnemyController : MonoBehaviour
 
     public void EnemyHit(float damage)
     {
+        Debug.Log(iFrames);
         if (iFrames <= 0)
         {
             health -= damage;
@@ -129,7 +136,7 @@ public class EnemyController : MonoBehaviour
         }
         if (health <= 0)
         {
-            Debug.Log("death");
+            Destroy(gameObject);
         }
     }
 
@@ -138,13 +145,5 @@ public class EnemyController : MonoBehaviour
         Vector3 direction = lastSeenPlayerPosition - transform.position;
         Quaternion rotation = Quaternion.LookRotation(direction);
         return Quaternion.Lerp(transform.rotation, rotation, Time.deltaTime);
-    }
-
-    void OnCollisionExit(Collision other)
-    {
-        if (other.transform.CompareTag("PlayerWeapon"))
-        {
-            iFrames = 0f;
-        }
     }
 }

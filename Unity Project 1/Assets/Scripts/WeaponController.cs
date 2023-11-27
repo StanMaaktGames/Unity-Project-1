@@ -4,13 +4,12 @@ using UnityEngine;
 
 public class WeaponController : MonoBehaviour
 {
-    public Collider weaponCollider;
+    Collider weaponCollider;
 
-    GameObject weapon;
+    public int opponentLayer;
 
     public float damage = 10f;
 
-    // Start is called before the first frame update
     void Start()
     {
         weaponCollider = GetComponent<Collider>();
@@ -18,10 +17,32 @@ public class WeaponController : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
-        Debug.Log("collision");
-        if (other.CompareTag("Enemy"))
+        Debug.Log(other.transform.gameObject.layer);
+        Debug.Log(opponentLayer);
+        if (other.transform.gameObject.layer == opponentLayer)
         {
-            other.GetComponent<EnemyController>().EnemyHit(damage);
+            if (opponentLayer == 9)
+            {
+                other.GetComponent<PlayerController>().PlayerHit(damage);
+            }
+            else if (opponentLayer == 8)
+            {
+                other.GetComponent<EnemyHealth>().EnemyHit(damage);
+            }
         }
+        // if (other.CompareTag("Enemy"))
+        // {
+        //     other.GetComponent<EnemyController>().EnemyHit(damage);
+        // }
+    }
+
+    void AttackStart()
+    {
+        weaponCollider.enabled = true;
+    }
+
+    void AttackEnd()
+    {
+        weaponCollider.enabled = false;
     }
 }
