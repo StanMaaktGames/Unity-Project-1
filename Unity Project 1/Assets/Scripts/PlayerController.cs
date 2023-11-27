@@ -49,11 +49,10 @@ public class PlayerController : MonoBehaviour
         stamina = maxStamina;
         health = maxHealth;
         Cursor.lockState = CursorLockMode.Locked;
-        animator = GetComponentInChildren<Animator>();
+        animator = GetComponent<Animator>();
         weaponCollider = weaponController.GetComponentInChildren<Collider>();
     }
 
-    // Update is called once per frame
     void Update()
     {
         staminaSlider.value = stamina;
@@ -147,10 +146,12 @@ public class PlayerController : MonoBehaviour
         lastPosition = transform.position;
     }
 
-    int AnimateMovingState() //determine whether the idle, walking or running animation should be playing
+    int AnimateMovingState() // determine whether the idle, walking or running animation should be playing
     {
         moveVelocity = ((transform.position - lastPosition)) / Time.deltaTime;
         moveVelocityFloat = new Vector2(Mathf.Abs(moveVelocity.x), Mathf.Abs(moveVelocity.z)).magnitude;
+
+        Debug.Log(moveVelocity);
 
         if (moveVelocityFloat > runSpeed - 1)
         {
