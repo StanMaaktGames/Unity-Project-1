@@ -29,7 +29,7 @@ public class EnemyMovement : MonoBehaviour
         agent.speed = speed;
     }
 
-    public void Searching()
+    public void Searching(Vector3 lastSeenPlayerPosition)
     {
         agent.isStopped = false;
         agent.speed = speed;

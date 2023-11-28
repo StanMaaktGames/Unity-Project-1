@@ -68,7 +68,7 @@ public class PlayerController : MonoBehaviour
         RaycastHit hit;
         if (isGrounded)
         {
-            if (Physics.Raycast(groundCheck.position, Vector3.down, out hit, groundDistance, groundMask))
+            if (Physics.Raycast(groundCheck.position, Vector3.down, out hit, 10, groundMask))
             {
                 hitNormal = hit.normal;
                 if (Mathf.Abs(hitNormal.x) + Mathf.Abs(hitNormal.z) > 1)
@@ -77,7 +77,6 @@ public class PlayerController : MonoBehaviour
                 }
             }
         }
-
         if (isGrounded && velocity.y < 0)
         {
             velocity.y = -2f;
@@ -86,7 +85,6 @@ public class PlayerController : MonoBehaviour
         float horizontal = Input.GetAxisRaw("Horizontal");
         float vertical = Input.GetAxisRaw("Vertical");
         Vector3 direction = new Vector3(horizontal, 0f, vertical).normalized;
-
         if (direction.magnitude > 0.1f ) // move the player
         {
             float targetAngle = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg + cam.eulerAngles.y;
@@ -94,26 +92,30 @@ public class PlayerController : MonoBehaviour
             transform.rotation = Quaternion.Euler(0f, angle, 0f);
 
             Vector3 moveDir = Quaternion.Euler(0f, targetAngle, 0f) * Vector3.forward;
-            if (!(animator.GetCurrentAnimatorStateInfo(0).IsName("SwordAttack1") || animator.GetCurrentAnimatorStateInfo(0).IsName("SwordAttack2") || animator.GetCurrentAnimatorStateInfo(0).IsName("SwordAttack3")))
+            if (!animator.GetCurrentAnimatorStateInfo(0).IsName("SwordAttack1")) // don't move while attacking
             {
-                if (Input.GetKey("left shift") && stamina > 0)
+                if (Input.GetKey("q") && stamina > 0) // sprint
                 {
-                    controller.Move(moveDir.normalized * runSpeed * Time.deltaTime);
+                    animator.SetInteger("movingState", 2);
                     stamina -= Time.deltaTime * 5;
                     staminaRecharge = staminaRechargeCooldown;
                 }
-                else if (Input.GetKey("left shift"))
+                else if (Input.GetKey("q")) // can't sprint because out of stamina
                 {
                     stamina -= Time.deltaTime * 5;
                     staminaRecharge = staminaRechargeCooldown;
-                    controller.Move(moveDir.normalized * speed * Time.deltaTime);
+                    animator.SetInteger("movingState", 1);
                 } 
-                else
+                else // move normally
                 {
-                    controller.Move(moveDir.normalized * speed * Time.deltaTime);
+                    animator.SetInteger("movingState", 1);
                 }
             }
-        } 
+        }
+        else // not moving
+        {
+            animator.SetInteger("movingState", 0);
+        }
 
         if (Input.GetButtonDown("Jump") && isGrounded)
         {
@@ -121,47 +123,45 @@ public class PlayerController : MonoBehaviour
         }
 
         velocity.y += gravity * Time.deltaTime;
-
         controller.Move(velocity * Time.deltaTime);
 
         if (Input.GetMouseButtonDown(0) && !animator.GetBool("attack"))
         {
+            if (animator.GetBool("endAttack"))
+            {
+                animator.ResetTrigger("endAttack");
+            }
+            else
+            {
+                animator.SetTrigger("endAttack");
+            }
             animator.SetTrigger("attack");
             stamina -= 3;
             staminaRecharge = staminaRechargeCooldown;
         }
 
-        if (animator.GetCurrentAnimatorStateInfo(0).IsName("SwordAttack1") || animator.GetCurrentAnimatorStateInfo(0).IsName("SwordAttack2") || animator.GetCurrentAnimatorStateInfo(0).IsName("SwordAttack3")) // turn weapon collider on/off
+        if(Input.GetKeyDown(KeyCode.LeftShift) && !animator.GetCurrentAnimatorStateInfo(0).IsName("dodgeBackwards"))
         {
-            weaponCollider.enabled = true;
-        }
-        else
-        {
-            weaponCollider.enabled = false;
+            animator.SetTrigger("dodge");
+            iFrames = 0.7f;
         }
 
         iFrames -= Time.deltaTime;
-        
-        animator.SetInteger("movingState", AnimateMovingState());
         lastPosition = transform.position;
     }
 
-    int AnimateMovingState() // determine whether the idle, walking or running animation should be playing
+    void AttackAnimEnd()
     {
-        moveVelocity = ((transform.position - lastPosition)) / Time.deltaTime;
-        moveVelocityFloat = new Vector2(Mathf.Abs(moveVelocity.x), Mathf.Abs(moveVelocity.z)).magnitude;
+        animator.ResetTrigger("attack");
+    }
 
-        Debug.Log(moveVelocity);
-
-        if (moveVelocityFloat > runSpeed - 1)
-        {
-            return 2;
-        }
-        else if (moveVelocityFloat > 0)
-        {
-            return 1;
-        }
-        return 0;
+    void AttackStart()
+    {
+        weaponCollider.enabled = true;
+    }
+    void AttackEnd()
+    {
+        weaponCollider.enabled = false;
     }
 
     void OnControllerColliderHit (ControllerColliderHit hit) 
@@ -171,7 +171,6 @@ public class PlayerController : MonoBehaviour
 
     public void PlayerHit(float damage)
     {
-        Debug.Log(iFrames);
         if (iFrames <= 0)
         {
             animator.SetTrigger("hit");

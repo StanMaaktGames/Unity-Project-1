@@ -31,7 +31,7 @@ public class EnemyStateController : MonoBehaviour
         }
         else if (interest > 0)
         {
-            GetComponent<EnemyMovement>().Searching();
+            GetComponent<EnemyMovement>().Searching(lastSeenPlayerPosition);
         }
         else 
         {
@@ -42,9 +42,9 @@ public class EnemyStateController : MonoBehaviour
 
         if (distance <= sightDistance)
         {
-            if (Physics.Raycast(transform.position, (player.transform.position - transform.position), out hit, 50))
+            if (Physics.Raycast(transform.position, (player.transform.position - transform.position), out hit, sightDistance))
             {
-                if (hit.transform == player.transform)
+                if (hit.transform == player.transform);
                 {
                     interest += Time.deltaTime * memory;
                     interest += (sightDistance / (distance + 0.0001f) - 1) * Time.deltaTime;
@@ -56,7 +56,9 @@ public class EnemyStateController : MonoBehaviour
                 }
             }
         }
-        interest -= Time.deltaTime * memory;
-        Debug.Log(interest);
+        if (interest > 0)
+        {
+            interest -= Time.deltaTime * memory;
+        }
     }
 }

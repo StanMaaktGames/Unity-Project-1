@@ -8,7 +8,6 @@ public class ObjectBreakOnHit : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
-        Debug.Log("collision");
         if (other.CompareTag("PlayerWeapon"))
         {
             health -= 10f;

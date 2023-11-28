@@ -17,8 +17,6 @@ public class WeaponController : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
-        Debug.Log(other.transform.gameObject.layer);
-        Debug.Log(opponentLayer);
         if (other.transform.gameObject.layer == opponentLayer)
         {
             if (opponentLayer == 9)

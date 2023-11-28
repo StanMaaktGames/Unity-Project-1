@@ -128,7 +128,6 @@ public class EnemyController : MonoBehaviour
 
     public void EnemyHit(float damage)
     {
-        Debug.Log(iFrames);
         if (iFrames <= 0)
         {
             health -= damage;

@@ -20,11 +20,11 @@ public class EnemyHealth : MonoBehaviour
     void Update()
     {
         healthSlider.value = health;
+        iFrames -= Time.deltaTime;
     }
 
     public void EnemyHit(float damage)
     {
-        Debug.Log(iFrames);
         if (iFrames <= 0)
         {
             health -= damage;

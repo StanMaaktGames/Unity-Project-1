@@ -13,14 +13,12 @@ public class EnemyAttacking : MonoBehaviour
     Animator animator;
     EnemyStateController EnemyStateController;
 
-    // Start is called before the first frame update
     void Start()
     {
         animator = GetComponentInChildren<Animator>();
         EnemyStateController = GetComponent<EnemyStateController>();
     }
 
-    // Update is called once per frame
     void Update()
     {
         distance = Vector3.Distance(transform.position, player.transform.position);
