@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &6275322694073203337
+--- !u!1 &4537354769411415031
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,48 +8,47 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 2788692229892387691}
-  - component: {fileID: 3654493553272537131}
-  - component: {fileID: 84176831347154628}
-  - component: {fileID: -7170829671524401117}
-  - component: {fileID: 5220577139208889193}
-  m_Layer: 0
-  m_Name: Enemy Club
-  m_TagString: EnemyWeapon
+  - component: {fileID: 4692405799523049251}
+  - component: {fileID: 1665011320435478862}
+  - component: {fileID: 6527903611745959177}
+  - component: {fileID: 8014862754780183165}
+  m_Layer: 7
+  m_Name: Rock3
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &2788692229892387691
+--- !u!4 &4692405799523049251
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6275322694073203337}
+  m_GameObject: {fileID: 4537354769411415031}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.25, y: 0.25, z: 0.25}
+  m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -649.5221, y: 3.2613487, z: 335.23953}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!33 &3654493553272537131
+--- !u!33 &1665011320435478862
 MeshFilter:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6275322694073203337}
-  m_Mesh: {fileID: 4084444463187792637, guid: 60eb923775a7b764ca74efc4351fa2be, type: 3}
---- !u!23 &84176831347154628
+  m_GameObject: {fileID: 4537354769411415031}
+  m_Mesh: {fileID: -3983063591393173388, guid: 431d0aad9a9340b4ab68b04430b8ed3a, type: 3}
+--- !u!23 &6527903611745959177
 MeshRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6275322694073203337}
+  m_GameObject: {fileID: 4537354769411415031}
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
@@ -63,7 +62,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: -1444460858095362738, guid: 60eb923775a7b764ca74efc4351fa2be, type: 3}
+  - {fileID: 963798294112862009, guid: 431d0aad9a9340b4ab68b04430b8ed3a, type: 3}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -85,27 +84,13 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &-7170829671524401117
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6275322694073203337}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e42c0646326a0d34f8f0006cc1e36e02, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  opponentLayer: 9
-  damage: 25
---- !u!64 &5220577139208889193
+--- !u!64 &8014862754780183165
 MeshCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6275322694073203337}
+  m_GameObject: {fileID: 4537354769411415031}
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
@@ -114,10 +99,10 @@ MeshCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 5
   m_Convex: 1
   m_CookingOptions: 30
-  m_Mesh: {fileID: 4084444463187792637, guid: 60eb923775a7b764ca74efc4351fa2be, type: 3}
+  m_Mesh: {fileID: -3983063591393173388, guid: 431d0aad9a9340b4ab68b04430b8ed3a, type: 3}

@@ -15,6 +15,7 @@ public class PlayerController : MonoBehaviour
     public Slider healthSlider;
     public GameObject staminaSliderRect;
     public Transform weaponController;
+    public GameObject deathScreen;
     
     Collider weaponCollider;
     Animator animator;
@@ -180,7 +181,9 @@ public class PlayerController : MonoBehaviour
         }
         if (health <= 0)
         {
+            deathScreen.SetActive(true);
             Debug.Log("death");
+            Destroy(gameObject);
         }
     }
 }
