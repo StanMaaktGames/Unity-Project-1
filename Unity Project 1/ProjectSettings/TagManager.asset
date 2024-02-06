@@ -18,8 +18,8 @@ TagManager:
   - Objects
   - Enemy
   - Player
-  - 
-  - 
+  - CameraLockOnTarget
+  - Camera
   - 
   - 
   - 

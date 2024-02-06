@@ -145,7 +145,7 @@ public class PlayerController : MonoBehaviour
         {
             animator.SetTrigger("dodge");
             iFrames = 0.7f;
-        }
+        }        
 
         iFrames -= Time.deltaTime;
         lastPosition = transform.position;
@@ -181,9 +181,9 @@ public class PlayerController : MonoBehaviour
         }
         if (health <= 0)
         {
+            Cursor.lockState = CursorLockMode.None;
             deathScreen.SetActive(true);
             Debug.Log("death");
-            Destroy(gameObject);
         }
     }
 }

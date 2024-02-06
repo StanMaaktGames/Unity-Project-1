@@ -8,7 +8,7 @@ public class EnemyAttacking : MonoBehaviour
     public GameObject player;
     public GameObject WeaponController;
 
-    public float speed;
+    public float speed, rotationSpeed;
     
     float distance;
 
@@ -21,12 +21,12 @@ public class EnemyAttacking : MonoBehaviour
     AnimationEvent evt4;
     AnimationEvent evt5;
     AnimationEvent evt6;
-    Collider weaponCollider;
+    public Collider weaponCollider;
 
     void Start()
     {
         weaponCollider = WeaponController.GetComponentInChildren<Collider>();
-        // weaponCollider.enabled = false;
+        weaponCollider.enabled = true;
         animator = GetComponentInChildren<Animator>();
         EnemyStateController = GetComponent<EnemyStateController>();
         attackAnimClip = animator.runtimeAnimatorController.animationClips[2];
@@ -38,22 +38,30 @@ public class EnemyAttacking : MonoBehaviour
         evt2.time = 1.23f;
         evt2.functionName = "AttackEnd";
         evt3 = new AnimationEvent();
-        evt3.time = 2.34f;
+        evt3.time = 2.15f;
         evt3.functionName = "AttackStart";
         evt4 = new AnimationEvent();
-        evt4.time = 2.6f;
+        evt4.time = 3.00f;
         evt4.functionName = "AttackEnd";
         evt5 = new AnimationEvent();
-        evt5.time = 5.0f;
+        evt5.time = 5.02f;
         evt5.functionName = "AttackStart";
         evt6 = new AnimationEvent();
-        evt6.time = 5.33f;
+        evt6.time = 5.20f;
         evt6.functionName = "AttackEnd";
+
+        attackAnimClip.AddEvent(evt1);
+        attackAnimClip.AddEvent(evt2);
+        attackAnimClip.AddEvent(evt3);
+        attackAnimClip.AddEvent(evt4);
+        attackAnimClip.AddEvent(evt5);
+        attackAnimClip.AddEvent(evt6);
     }
 
     void Update()
     {
         distance = Vector3.Distance(transform.position, player.transform.position);
+        animator.SetFloat("distanceToPlayer", distance);
     }
 
     public void Fighting()
@@ -81,7 +89,7 @@ public class EnemyAttacking : MonoBehaviour
     {
         Vector3 direction = EnemyStateController.lastSeenPlayerPosition - transform.position;
         Quaternion rotation = Quaternion.LookRotation(direction);
-        return Quaternion.Lerp(transform.rotation, rotation, Time.deltaTime);
+        return Quaternion.Lerp(transform.rotation, rotation, Time.deltaTime * rotationSpeed);
     }
 
     void AttackStart()

@@ -4,16 +4,9 @@ using UnityEngine;
 
 public class WeaponController : MonoBehaviour
 {
-    Collider weaponCollider;
-
     public int opponentLayer;
 
     public float damage = 10f;
-
-    void Start()
-    {
-        weaponCollider = GetComponent<Collider>();
-    }
 
     void OnTriggerEnter(Collider other)
     {
@@ -32,15 +25,5 @@ public class WeaponController : MonoBehaviour
         // {
         //     other.GetComponent<EnemyController>().EnemyHit(damage);
         // }
-    }
-
-    void AttackStart()
-    {
-        weaponCollider.enabled = true;
-    }
-
-    void AttackEnd()
-    {
-        weaponCollider.enabled = false;
     }
 }

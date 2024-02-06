@@ -33,20 +33,6 @@ ModelImporter:
       that will be discarded.\n\t'DEF-foot.L' has scale animation that will be discarded.\n\t'DEF-thigh.R'
       has scale animation that will be discarded.\n\t'DEF-shin.R' has scale animation
       that will be discarded.\n\t'DEF-foot.R' has scale animation that will be discarded.\n\t'DEF-toe.R'
-      has scale animation that will be discarded.\n\nClip 'rig|Attack1?' has import
-      animation warnings that might lower retargeting quality:\nNote: Activate translation
-      DOF on avatar to improve retargeting quality.\n\t'DEF-spine.004' is inbetween
-      humanoid transforms and has rotation animation that will be discarded.\n\t'DEF-spine.004'
-      has scale animation that will be discarded.\n\t'DEF-neck' has scale animation
-      that will be discarded.\n\t'DEF-head' has scale animation that will be discarded.\n\t'DEF-upper_arm.L'
-      has translation animation that will be discarded.\n\t'DEF-upper_arm.L' has
-      scale animation that will be discarded.\n\t'DEF-forearm.L' has scale animation
-      that will be discarded.\n\t'DEF-hand.L' has scale animation that will be discarded.\n\t'DEF-upper_arm.R'
-      has translation animation that will be discarded.\n\t'DEF-upper_arm.R' has
-      scale animation that will be discarded.\n\t'DEF-forearm.R' has scale animation
-      that will be discarded.\n\t'DEF-hand.R' has scale animation that will be discarded.\n\t'DEF-thigh.L'
-      has scale animation that will be discarded.\n\t'DEF-foot.L' has scale animation
-      that will be discarded.\n\t'DEF-thigh.R' has scale animation that will be discarded.\n\t'DEF-foot.R'
       has scale animation that will be discarded.\n\nClip 'rig|Idle' has import animation
       warnings that might lower retargeting quality:\nNote: Activate translation
       DOF on avatar to improve retargeting quality.\n\t'DEF-spine.001' has scale

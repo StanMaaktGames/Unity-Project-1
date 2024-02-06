@@ -44,15 +44,12 @@ public class EnemyStateController : MonoBehaviour
         {
             if (Physics.Raycast(transform.position, (player.transform.position - transform.position), out hit, sightDistance))
             {
-                if (hit.transform == player.transform);
+                interest += Time.deltaTime * memory;
+                interest += (sightDistance / (distance + 0.0001f) - 1) * Time.deltaTime;
+                lastSeenPlayerPosition = player.transform.position;
+                if (interest > requiredInterest)
                 {
-                    interest += Time.deltaTime * memory;
-                    interest += (sightDistance / (distance + 0.0001f) - 1) * Time.deltaTime;
-                    lastSeenPlayerPosition = player.transform.position;
-                    if (interest > requiredInterest)
-                    {
-                        interest = requiredInterest * 2;
-                    }
+                    interest = requiredInterest * 2;
                 }
             }
         }
