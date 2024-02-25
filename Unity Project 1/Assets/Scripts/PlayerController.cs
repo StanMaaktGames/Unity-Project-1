@@ -9,6 +9,7 @@ public class PlayerController : MonoBehaviour
 {
     public CharacterController controller;
     public Transform cam;
+    public GameObject lockOnCamera;
     public Transform groundCheck;
     public LayerMask groundMask;
     public Slider staminaSlider;
@@ -19,6 +20,7 @@ public class PlayerController : MonoBehaviour
     
     Collider weaponCollider;
     Animator animator;
+    Script cameraLockOnScript;
 
     public float speed = 6f;
     public float runSpeed = 12f;
@@ -43,7 +45,7 @@ public class PlayerController : MonoBehaviour
     float iFrames;
 
     Vector3 velocity;
-    public bool isGrounded;
+    bool isGrounded;
 
     void Start()
     {
@@ -52,10 +54,12 @@ public class PlayerController : MonoBehaviour
         Cursor.lockState = CursorLockMode.Locked;
         animator = GetComponent<Animator>();
         weaponCollider = weaponController.GetComponentInChildren<Collider>();
+        cameraLockOnScript = lockOnCamera.GetComponent<CameraLockOn>();
     }
 
     void Update()
     {
+        Debug.Log(cameraLockOnScript);
         staminaSlider.value = stamina;
         healthSlider.value = health;
         staminaRecharge -= Time.deltaTime;
@@ -86,6 +90,26 @@ public class PlayerController : MonoBehaviour
         float horizontal = Input.GetAxisRaw("Horizontal");
         float vertical = Input.GetAxisRaw("Vertical");
         Vector3 direction = new Vector3(horizontal, 0f, vertical).normalized;
+        if (direction.x < 0)
+        {
+            animator.SetInteger("direction", 3); // left
+        }
+        else if (direction.x > 0)
+        {
+            animator.SetInteger("direction", 1); // right
+        }
+        else if (direction.z < 0)
+        {
+            animator.SetInteger("direction", 2); // backwards
+        }
+        else if (direction.z > 0)
+        {
+            animator.SetInteger("direction", 0); // forward
+        }
+        else
+        {
+            animator.SetInteger("direction", -1); // no direction
+        }
         if (direction.magnitude > 0.1f ) // move the player
         {
             float targetAngle = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg + cam.eulerAngles.y;
@@ -118,7 +142,7 @@ public class PlayerController : MonoBehaviour
             animator.SetInteger("movingState", 0);
         }
 
-        if (Input.GetButtonDown("Jump") && isGrounded)
+        if (Input.GetButtonDown("Jump") && isGrounded) // jump
         {
             velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);
         }
@@ -126,7 +150,7 @@ public class PlayerController : MonoBehaviour
         velocity.y += gravity * Time.deltaTime;
         controller.Move(velocity * Time.deltaTime);
 
-        if (Input.GetMouseButtonDown(0) && !animator.GetBool("attack"))
+        if (Input.GetMouseButtonDown(0) && !animator.GetBool("attack")) // attack
         {
             if (animator.GetBool("endAttack"))
             {
@@ -141,10 +165,10 @@ public class PlayerController : MonoBehaviour
             staminaRecharge = staminaRechargeCooldown;
         }
 
-        if(Input.GetKeyDown(KeyCode.LeftShift) && !animator.GetCurrentAnimatorStateInfo(0).IsName("dodgeBackwards"))
+        if (Input.GetKeyDown(KeyCode.LeftShift) && !animator.GetCurrentAnimatorStateInfo(0).IsName("Dodge Backwards") && !animator.GetCurrentAnimatorStateInfo(0).IsName("Dodge Left") && !animator.GetCurrentAnimatorStateInfo(0).IsName("Dodge Right")) // dodge
         {
             animator.SetTrigger("dodge");
-            iFrames = 0.7f;
+            iFrames = 0.5f;
         }        
 
         iFrames -= Time.deltaTime;
