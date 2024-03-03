@@ -33,7 +33,6 @@ public class EnemyMovement : MonoBehaviour
     {
         agent.isStopped = false;
         agent.speed = speed;
-
         if (agent.remainingDistance < 1.0f)
         {
             if (pathPointIndex > path.Length - 2)
@@ -59,25 +58,18 @@ public class EnemyMovement : MonoBehaviour
     {
         agent.isStopped = false;
         agent.speed = speed;
-        if (interest > requiredInterest/3*2) 
-        {
-            agent.SetDestination(lastSeenPlayerPosition);
-        }
-        else if (interest > requiredInterest/3)
-        {
-            transform.rotation = RotateTowardsPlayer();
-        }
+        agent.SetDestination(lastSeenPlayerPosition);
     }
 
-    Vector3 FindRandomPosition() // find random accessible position within walkRadius
-    {
-        Vector3 randomDirection = UnityEngine.Random.insideUnitSphere * walkRadius;
-        randomDirection += transform.position;
-        UnityEngine.AI.NavMeshHit hit;
-        UnityEngine.AI.NavMesh.SamplePosition(randomDirection, out hit, walkRadius, 1);
-        Debug.Log(transform.position - hit.position);
-        return(hit.position);
-    }
+    // Vector3 FindRandomPosition() // find random accessible position within walkRadius
+    // {
+    //     Vector3 randomDirection = UnityEngine.Random.insideUnitSphere * walkRadius;
+    //     randomDirection += transform.position;
+    //     UnityEngine.AI.NavMeshHit hit;
+    //     UnityEngine.AI.NavMesh.SamplePosition(randomDirection, out hit, walkRadius, 1);
+    //     Debug.Log(transform.position - hit.position);
+    //     return(hit.position);
+    // }
 
     Quaternion RotateTowardsPlayer()
     {

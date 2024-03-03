@@ -17,10 +17,11 @@ public class PlayerController : MonoBehaviour
     public GameObject staminaSliderRect;
     public Transform weaponController;
     public GameObject deathScreen;
+    public GameObject gameManager;
     
     Collider weaponCollider;
     Animator animator;
-    Script cameraLockOnScript;
+    CameraLockOn cameraLockOnScript;
 
     public float speed = 6f;
     public float runSpeed = 12f;
@@ -43,9 +44,10 @@ public class PlayerController : MonoBehaviour
     Vector3 moveVelocity;
     float moveVelocityFloat;
     float iFrames;
-
+    float targetAngle;
     Vector3 velocity;
     bool isGrounded;
+    bool alive = true;
 
     void Start()
     {
@@ -59,7 +61,6 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
-        Debug.Log(cameraLockOnScript);
         staminaSlider.value = stamina;
         healthSlider.value = health;
         staminaRecharge -= Time.deltaTime;
@@ -89,8 +90,17 @@ public class PlayerController : MonoBehaviour
 
         float horizontal = Input.GetAxisRaw("Horizontal");
         float vertical = Input.GetAxisRaw("Vertical");
+        if (!alive)
+        {
+            horizontal = 0;
+            vertical = 0;
+        }
         Vector3 direction = new Vector3(horizontal, 0f, vertical).normalized;
-        if (direction.x < 0)
+        if (!cameraLockOnScript.lockedOn)
+        {
+            animator.SetInteger("direction", -1); // default
+        }
+        else if (direction.x < 0)
         {
             animator.SetInteger("direction", 3); // left
         }
@@ -110,11 +120,18 @@ public class PlayerController : MonoBehaviour
         {
             animator.SetInteger("direction", -1); // no direction
         }
-        if (direction.magnitude > 0.1f ) // move the player
+        if (direction.magnitude > 0.1f && alive) // move the player
         {
             float targetAngle = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg + cam.eulerAngles.y;
             float angle = Mathf.SmoothDampAngle(transform.eulerAngles.y, targetAngle, ref turnsmoothVelocity, turnSmoothTime);
-            transform.rotation = Quaternion.Euler(0f, angle, 0f);
+            if (!cameraLockOnScript.lockedOn)
+            {
+                transform.rotation = Quaternion.Euler(0f, angle, 0f);
+            }
+            else
+            {
+                transform.rotation = Quaternion.Euler(0f, cam.eulerAngles.y, 0f);
+            }
 
             Vector3 moveDir = Quaternion.Euler(0f, targetAngle, 0f) * Vector3.forward;
             if (!animator.GetCurrentAnimatorStateInfo(0).IsName("SwordAttack1")) // don't move while attacking
@@ -142,7 +159,7 @@ public class PlayerController : MonoBehaviour
             animator.SetInteger("movingState", 0);
         }
 
-        if (Input.GetButtonDown("Jump") && isGrounded) // jump
+        if (Input.GetButtonDown("Jump") && isGrounded && alive) // jump
         {
             velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);
         }
@@ -150,7 +167,7 @@ public class PlayerController : MonoBehaviour
         velocity.y += gravity * Time.deltaTime;
         controller.Move(velocity * Time.deltaTime);
 
-        if (Input.GetMouseButtonDown(0) && !animator.GetBool("attack")) // attack
+        if (Input.GetMouseButtonDown(0) && !animator.GetBool("attack") && alive) // attack
         {
             if (animator.GetBool("endAttack"))
             {
@@ -165,7 +182,7 @@ public class PlayerController : MonoBehaviour
             staminaRecharge = staminaRechargeCooldown;
         }
 
-        if (Input.GetKeyDown(KeyCode.LeftShift) && !animator.GetCurrentAnimatorStateInfo(0).IsName("Dodge Backwards") && !animator.GetCurrentAnimatorStateInfo(0).IsName("Dodge Left") && !animator.GetCurrentAnimatorStateInfo(0).IsName("Dodge Right")) // dodge
+        if (alive && Input.GetKeyDown(KeyCode.LeftShift) && !animator.GetCurrentAnimatorStateInfo(0).IsName("Dodge Backwards") && !animator.GetCurrentAnimatorStateInfo(0).IsName("Dodge Left") && !animator.GetCurrentAnimatorStateInfo(0).IsName("Dodge Right")) // dodge
         {
             animator.SetTrigger("dodge");
             iFrames = 0.5f;
@@ -208,6 +225,7 @@ public class PlayerController : MonoBehaviour
             Cursor.lockState = CursorLockMode.None;
             deathScreen.SetActive(true);
             Debug.Log("death");
+            alive = false;
         }
     }
 }

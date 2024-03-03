@@ -6,6 +6,10 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
+    bool isPaused = false;
+
+    public GameObject pauseMenu;
+
     void Start()
     {
         Cursor.lockState = CursorLockMode.Locked;
@@ -18,11 +22,31 @@ public class GameManager : MonoBehaviour
             Debug.LogWarning("Reset");
             SceneManager.LoadScene("SampleScene");
         }
+
+        if (Input.GetKeyDown("p"))
+        {
+            TogglePause();
+        }
     }
 
     void Respawn()
     {
         Console.WriteLine("Respawn");
         SceneManager.LoadScene("SampleScene");
+    }
+
+    void TogglePause()
+    {
+        isPaused = !isPaused;
+        Time.timeScale = isPaused ? 0.00000000001f : 1;
+        pauseMenu.SetActive(isPaused);
+        if (isPaused)
+        {
+            Cursor.lockState = CursorLockMode.None;
+        }
+        else
+        {
+            Cursor.lockState = CursorLockMode.Locked;
+        }
     }
 }

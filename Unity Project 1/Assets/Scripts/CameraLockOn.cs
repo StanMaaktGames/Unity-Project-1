@@ -11,15 +11,21 @@ public class CameraLockOn : MonoBehaviour
     public CinemachineFreeLook playerCamera;
     public CinemachineVirtualCamera lockOnCamera;
     public float distance = 3f;
-    public bool lockedOn = true;
+    public float height = 3f;
+    public bool lockedOn = false;
     public Image cameraTargetImage;
 
     float lockCooldown;
 
     void Update()
     {
+        if (cameraTargetImage == null)
+        {
+            lockedOn = false;
+            lockOnCamera.Priority = 5;
+        }
 
-        transform.position = player.position - transform.forward * distance + new Vector3(0, 2, 0);
+        transform.position = player.position - transform.forward * distance + new Vector3(0, height, 0);
         if (lockedOn)
         {
             transform.LookAt(target);
@@ -31,9 +37,6 @@ public class CameraLockOn : MonoBehaviour
                 lockOnCamera.Priority = 5;
                 target = null;
                 cameraTargetImage.enabled = false;
-
-                // var orbital = playerCamera.GetCinemachineComponent<CinemachineOrbitalTransposer>();
-                // orbital.m_XAxis.Value = 0f;
             }
         }
 

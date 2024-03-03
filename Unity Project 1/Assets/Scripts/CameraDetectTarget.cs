@@ -24,7 +24,6 @@ public class CameraDetectTarget : MonoBehaviour
         {
             target = other.transform;
             targetFound = true;
-            Debug.Log("Found camera target");
         }
     }
 

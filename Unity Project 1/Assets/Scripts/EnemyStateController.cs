@@ -29,7 +29,7 @@ public class EnemyStateController : MonoBehaviour
         {
             GetComponent<EnemyAttacking>().Fighting();
         }
-        else if (interest > 0)
+        else if (interest > requiredInterest * 0.33f)
         {
             GetComponent<EnemyMovement>().Searching(lastSeenPlayerPosition);
         }

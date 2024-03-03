@@ -11,6 +11,7 @@ public class EnemyAttacking : MonoBehaviour
     public float speed, rotationSpeed;
     
     float distance;
+    bool attackColliderActive = false;
 
     Animator animator;
     EnemyStateController EnemyStateController;
@@ -67,12 +68,15 @@ public class EnemyAttacking : MonoBehaviour
     public void Fighting()
     {
         agent.speed = speed;
-        if (animator.GetCurrentAnimatorStateInfo(0).IsName("Attack1")) // is attacking
+        if (animator.GetCurrentAnimatorStateInfo(0).IsName("Attack1")) // attack animation is playing
         {
             agent.isStopped = true;
-            transform.rotation = RotateTowardsPlayer();
+            if (!attackColliderActive)
+            {
+                transform.rotation = RotateTowardsPlayer();
+            }
         }
-        else if (distance > 2)
+        else if (distance > 1.5f)
         {
             agent.isStopped = false;
             agent.SetDestination(EnemyStateController.lastSeenPlayerPosition);
@@ -81,7 +85,7 @@ public class EnemyAttacking : MonoBehaviour
         {
             agent.isStopped = true;
             animator.SetTrigger("attack1");
-            agent.SetDestination(transform.position);
+            agent.ResetPath();
         }
     }
 
@@ -94,11 +98,13 @@ public class EnemyAttacking : MonoBehaviour
 
     void AttackStart()
     {
+        attackColliderActive = true;
         weaponCollider.enabled = true;
     }
 
     void AttackEnd()
     {
+        attackColliderActive = false;
         weaponCollider.enabled = false;
     }
 }
