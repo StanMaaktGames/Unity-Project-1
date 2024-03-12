@@ -18,12 +18,9 @@ public class WeaponController : MonoBehaviour
             }
             else if (opponentLayer == 8)
             {
-                other.GetComponent<EnemyHealth>().EnemyHit(damage);
+                Debug.Log(other);
+                other.GetComponentInParent<EnemyHealth>().EnemyHit(damage);
             }
         }
-        // if (other.CompareTag("Enemy"))
-        // {
-        //     other.GetComponent<EnemyController>().EnemyHit(damage);
-        // }
     }
 }

@@ -100,21 +100,37 @@ public class PlayerController : MonoBehaviour
         {
             animator.SetInteger("direction", -1); // default
         }
-        else if (direction.x < 0)
+        else if (direction.z > 0 && direction.x > 0)
         {
-            animator.SetInteger("direction", 3); // left
+            animator.SetInteger("direction", 1); // forward/right
         }
-        else if (direction.x > 0)
+        else if (direction.x > 0 && direction.z < 0)
         {
-            animator.SetInteger("direction", 1); // right
+            animator.SetInteger("direction", 3); // right/backward
         }
-        else if (direction.z < 0)
+        else if (direction.z < 0 && direction.x < 0)
         {
-            animator.SetInteger("direction", 2); // backwards
+            animator.SetInteger("direction", 5); // backward/left
+        }
+        else if (direction.x < 0 && direction.z > 0)
+        {
+            animator.SetInteger("direction", 7); // left/forward
         }
         else if (direction.z > 0)
         {
             animator.SetInteger("direction", 0); // forward
+        }
+        else if (direction.x > 0)
+        {
+            animator.SetInteger("direction", 2); // right
+        }
+        else if (direction.z < 0)
+        {
+            animator.SetInteger("direction", 4); // backwards
+        }
+        else if (direction.x < 0)
+        {
+            animator.SetInteger("direction", 6); // left
         }
         else
         {
@@ -167,17 +183,21 @@ public class PlayerController : MonoBehaviour
         velocity.y += gravity * Time.deltaTime;
         controller.Move(velocity * Time.deltaTime);
 
+        if (!animator.GetCurrentAnimatorStateInfo(0).IsName("SwordAttack1")) 
+        {
+            animator.ResetTrigger("endAttack");
+        }
         if (Input.GetMouseButtonDown(0) && !animator.GetBool("attack") && alive) // attack
         {
-            if (animator.GetBool("endAttack"))
+            if (animator.GetCurrentAnimatorStateInfo(0).IsName("SwordAttack1"))
             {
                 animator.ResetTrigger("endAttack");
             }
             else
             {
+                animator.SetTrigger("attack");
                 animator.SetTrigger("endAttack");
             }
-            animator.SetTrigger("attack");
             stamina -= 3;
             staminaRecharge = staminaRechargeCooldown;
         }
@@ -204,28 +224,35 @@ public class PlayerController : MonoBehaviour
     void AttackEnd()
     {
         weaponCollider.enabled = false;
+        animator.SetTrigger("endAttack");
     }
 
-    void OnControllerColliderHit (ControllerColliderHit hit) 
+    void OnControllerColliderHit(ControllerColliderHit hit) 
     {
         hitNormal = hit.normal;
     }
 
     public void PlayerHit(float damage)
     {
-        if (iFrames <= 0)
+        if (!alive)
         {
-            animator.SetTrigger("hit");
+            return;
+        }
+        if (iFrames <= 0 )
+        {
             animator.ResetTrigger("attack");
             health -= damage;
             iFrames = iFramesOnHit;
-        }
-        if (health <= 0)
-        {
-            Cursor.lockState = CursorLockMode.None;
-            deathScreen.SetActive(true);
-            Debug.Log("death");
-            alive = false;
+            if (health <= 0)
+            {
+                Cursor.lockState = CursorLockMode.None;
+                deathScreen.SetActive(true);
+                Debug.Log("death");
+                animator.SetTrigger("death");
+                alive = false;
+                return;
+            }
+            animator.SetTrigger("hit");
         }
     }
 }

@@ -6,15 +6,16 @@ using UnityEngine.UI;
 public class EnemyHealth : MonoBehaviour
 {
     public Slider healthSlider;
-
     public float maxhealth, iFramesOnHit;
 
     float health;
     float iFrames = 0f;
+    Animator animator;
 
     void Start()
     {
         health = maxhealth;
+        animator = GetComponentInChildren<Animator>();
     }
 
     void Update()
@@ -32,7 +33,15 @@ public class EnemyHealth : MonoBehaviour
         }
         if (health <= 0)
         {
-            Destroy(gameObject);
+            StartCoroutine(Death());
         }
+    }
+
+    IEnumerator Death()
+    {
+        Debug.Log("Death");
+        animator.SetTrigger("death");
+        yield return new WaitForSeconds(0.867f);
+        Destroy(gameObject);
     }
 }

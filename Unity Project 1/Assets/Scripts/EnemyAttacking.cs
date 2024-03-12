@@ -33,22 +33,22 @@ public class EnemyAttacking : MonoBehaviour
         attackAnimClip = animator.runtimeAnimatorController.animationClips[2];
 
         evt1 = new AnimationEvent();
-        evt1.time = 1.05f;
+        evt1.time = 1.33f;
         evt1.functionName = "AttackStart";
         evt2 = new AnimationEvent();
-        evt2.time = 1.23f;
+        evt2.time = 1.8f;
         evt2.functionName = "AttackEnd";
         evt3 = new AnimationEvent();
-        evt3.time = 2.15f;
+        evt3.time = 2.50f;
         evt3.functionName = "AttackStart";
         evt4 = new AnimationEvent();
-        evt4.time = 3.00f;
+        evt4.time = 2.90f;
         evt4.functionName = "AttackEnd";
         evt5 = new AnimationEvent();
-        evt5.time = 5.02f;
+        evt5.time = 4.00f;
         evt5.functionName = "AttackStart";
         evt6 = new AnimationEvent();
-        evt6.time = 5.20f;
+        evt6.time = 4.33f;
         evt6.functionName = "AttackEnd";
 
         attackAnimClip.AddEvent(evt1);
